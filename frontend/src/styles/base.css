@@ -1,0 +1,98 @@
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    min-block-size: 100dvh;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--vellum);
+    overflow-x: clip;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--ink-rule);
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+
+  a:hover {
+    color: var(--oxblood);
+    text-decoration-color: var(--oxblood);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--oxblood);
+    outline-offset: 3px;
+  }
+
+  .ink-dot {
+    color: var(--ink-rule);
+    user-select: none;
+  }
+
+  .chronicle-scroll,
+  .page-scroll {
+    --scrollbar-thumb: #785b35;
+    --scrollbar-track: transparent;
+
+    flex: 1 1 0;
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-inline-end: 0.85rem;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+  }
+
+  @supports not (scrollbar-color: auto) {
+    .chronicle-scroll,
+    .page-scroll {
+      scrollbar-width: auto;
+    }
+
+    .chronicle-scroll::-webkit-scrollbar,
+    .page-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chronicle-scroll::-webkit-scrollbar-thumb,
+    .page-scroll::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+    }
+
+    .chronicle-scroll::-webkit-scrollbar-track,
+    .page-scroll::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a {
+      transition: color 140ms ease, text-decoration-color 140ms ease;
+    }
+  }
+}

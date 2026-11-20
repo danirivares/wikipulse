@@ -1,0 +1,722 @@
+/* Archival Content Blocks, Ledger Lists, Compass Rose, Surveyor Gauges, Feed, Codex & Breakpoints */
+
+@layer components {
+  /* Archival Blocks (Zero Boxes) */
+  .folio-block {
+    width: 100%;
+    min-block-size: 0;
+  }
+
+  .folio-block-fill,
+  .folio-block-scroll {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  .block-head {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.3rem 0.9rem;
+    padding-bottom: 0.42rem;
+    margin-bottom: clamp(0.48rem, 0.9vh, 0.85rem);
+  }
+
+  .block-head::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.2px;
+    background: var(--rule-tapered);
+    pointer-events: none;
+  }
+
+  .block-head-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.14rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .block-title {
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--display);
+    font-weight: 600;
+    font-variation-settings: "opsz" 72, "SOFT" 25, "WONK" 1;
+    font-size: clamp(1.06rem, 0.92rem + 0.68vw, 1.56rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    text-shadow: 0 0.5px 0 rgba(255, 246, 214, 0.55);
+    text-wrap: balance;
+  }
+
+  @supports (font-size: 1cqi) {
+    .block-title {
+      font-size: clamp(1.04rem, 0.82rem + 1.25cqi, 1.6rem);
+    }
+  }
+
+  .section-glyph {
+    font-family: var(--body);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--oxblood);
+    font-size: 0.88em;
+  }
+
+  .block-kicker {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .archive-empty {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-mute);
+    padding-block: 1.5rem;
+    margin: 0;
+  }
+
+  /* Shared tapered hairline divider between sibling entries (excludes last item directly) */
+  .ledger-row:not(:last-child)::after,
+  .chronicle-entry:not(:last-child)::after,
+  .codex-entry:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--rule-tapered-soft);
+    pointer-events: none;
+  }
+
+  .ledger-row:not(:last-child)::after {
+    opacity: 0.68;
+  }
+
+  .chronicle-entry:not(:last-child)::after {
+    opacity: 0.7;
+  }
+
+  .codex-entry:not(:last-child)::after {
+    opacity: 0.72;
+  }
+
+  /* Manuscript Ledger Lists */
+  .ledger-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ledger-list-spread {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ledger-list-spread .ledger-row {
+    flex: 1 1 0;
+    align-content: center;
+  }
+
+  .ledger-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.3rem auto minmax(0.8rem, 1fr) minmax(7.5rem, 30%);
+    gap: 0.65rem;
+    align-items: baseline;
+    padding-block: clamp(0.28rem, 0.56vh, 0.58rem);
+  }
+
+  .ledger-row::before {
+    /* Fallback for browsers without `/` alt-text syntax; silent to screen readers where supported. */
+    content: attr(data-roman);
+    content: attr(data-roman) / "";
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--oxblood);
+    opacity: 0.86;
+    text-align: right;
+    padding-inline-end: 0.25rem;
+  }
+
+  .ledger-title {
+    font-family: var(--body);
+    font-size: clamp(0.96rem, 0.88rem + 0.34vw, 1.2rem);
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--ink);
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+
+  a.ledger-title {
+    text-decoration: none;
+  }
+
+  a.ledger-title:hover {
+    color: var(--oxblood);
+    text-decoration: underline;
+    text-decoration-color: var(--oxblood);
+  }
+
+  .ledger-leader {
+    height: 2px;
+    background-image: radial-gradient(
+      circle 0.9px at 3.5px 1px,
+      rgba(84, 56, 22, 0.42) 85%,
+      transparent 100%
+    );
+    background-size: 7px 2px;
+    background-repeat: repeat-x;
+    transform: translateY(-0.22em);
+    min-width: 0.6rem;
+  }
+
+  .ledger-meter {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .ledger-track {
+    flex: 1;
+    height: 1.5px;
+    background: var(--ink-rule-soft);
+    position: relative;
+  }
+
+  .ledger-fill {
+    position: absolute;
+    inset: -0.75px auto -0.75px 0;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(36, 23, 12, 0.75), var(--ink));
+    border-radius: 999px;
+  }
+
+  .ledger-fill::after {
+    content: "";
+    position: absolute;
+    right: -2.5px;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    background: var(--ink);
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .hazard-ledger .ledger-fill {
+    background: linear-gradient(90deg, rgba(130, 32, 26, 0.72), var(--oxblood));
+  }
+
+  .hazard-ledger .ledger-fill::after {
+    background: var(--oxblood);
+  }
+
+  .ledger-num {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+    min-width: 2.2rem;
+    text-align: right;
+  }
+
+  /* Copperplate Nightingale Compass Rose */
+  .rose-block {
+    flex: 1 1 0;
+    min-block-size: 12rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rose-plate {
+    flex: 1 1 0;
+    min-block-size: 0;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 50% 50%, rgba(164, 118, 46, 0.08) 0%, transparent 62%);
+  }
+
+  .rose-svg {
+    width: 100%;
+    height: 100%;
+    max-block-size: 100%;
+    display: block;
+    contain: layout style paint;
+  }
+
+  .rose-wedge {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .rose-wedge:focus-visible path:first-of-type {
+    stroke: var(--oxblood);
+    stroke-width: 2;
+  }
+
+  .rose-label {
+    font-family: var(--body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    fill: var(--ink);
+  }
+
+  .rose-label.is-lead {
+    font-weight: 600;
+    fill: var(--oxblood);
+  }
+
+  .rose-label-pct {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    fill: var(--ink-mute);
+  }
+
+  .rose-center-val {
+    font-family: var(--display);
+    font-size: 0.96rem;
+    font-weight: 600;
+    fill: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rose-center-sub {
+    font-family: var(--mono);
+    font-size: 0.48rem;
+    letter-spacing: 0.12em;
+    fill: var(--ink-faint);
+  }
+
+  /* Engraved Surveyor Ratio Gauges */
+  .ratio-block {
+    container-type: inline-size;
+  }
+
+  .ratio-block.is-muted {
+    opacity: 0.56;
+  }
+
+  .ratio-pair {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+
+  .ratio-pair-divider {
+    position: relative;
+    padding-inline-start: clamp(1rem, 2vw, 2rem);
+  }
+
+  .ratio-pair-divider::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6%;
+    bottom: 6%;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      var(--ink-rule-soft) 18%,
+      var(--ink-rule-soft) 82%,
+      transparent
+    );
+  }
+
+  .ratio-headline {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .ratio-pct {
+    font-family: var(--display);
+    font-weight: 600;
+    font-variation-settings: "opsz" 144, "SOFT" 10, "WONK" 0;
+    font-size: clamp(1.8rem, 1.3rem + 1.8vw, 3.1rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    text-shadow: 0 0.6px 0 rgba(255, 246, 214, 0.55);
+  }
+
+  @supports (font-size: 1cqi) {
+    .ratio-pct {
+      font-size: clamp(1.75rem, 1.15rem + 7cqi, 3.25rem);
+    }
+  }
+
+  .ratio-rubric .ratio-pct {
+    color: var(--oxblood);
+  }
+
+  .ratio-sub {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-mute);
+  }
+
+  .ratio-scale {
+    margin-bottom: 0.4rem;
+  }
+
+  .ratio-rule {
+    position: relative;
+    height: 5px;
+    border-top: 1px solid var(--ink-rule);
+    border-bottom: 1px solid var(--ink-rule);
+  }
+
+  .ratio-fill {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+  }
+
+  .ratio-rubric .ratio-fill {
+    background: var(--oxblood);
+  }
+
+  .ratio-rubric .ratio-rule {
+    border-color: rgba(130, 32, 26, 0.48);
+  }
+
+  .ratio-ticks {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2px;
+  }
+
+  .ratio-ticks span {
+    width: 1px;
+    height: 4px;
+    background: var(--ink-rule);
+  }
+
+  .ratio-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.3rem 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ratio-legend strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* Folio II · Live Chronicle Scroll */
+  .chronicle-entry {
+    position: relative;
+    padding-block: 0.75rem;
+  }
+
+  .chronicle-entry:nth-child(n + 8) {
+    content-visibility: auto;
+    contain-intrinsic-block-size: auto 6.5rem;
+  }
+
+  .chronicle-entry:first-child {
+    padding-top: 0.1rem;
+  }
+
+  .chronicle-entry.is-flagged {
+    border-inline-start: 2.5px solid var(--oxblood);
+    padding-inline-start: 0.95rem;
+  }
+
+  .entry-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 0.22rem;
+  }
+
+  .entry-seal {
+    color: var(--oxblood);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-decoration: underline;
+    text-decoration-style: double;
+    text-underline-offset: 0.22em;
+  }
+
+  .entry-user {
+    color: var(--ink-soft);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .entry-wiki {
+    color: var(--ink-faint);
+  }
+
+  .entry-time {
+    margin-inline-start: auto;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .entry-title {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: clamp(1.04rem, 0.96rem + 0.28vw, 1.24rem);
+    line-height: 1.26;
+    overflow-wrap: break-word;
+    text-decoration: none;
+  }
+
+  .entry-title:hover {
+    text-decoration: underline;
+  }
+
+  .entry-summary {
+    margin: 0.32rem 0 0;
+    max-inline-size: 72ch;
+    font-family: var(--body);
+    font-style: italic;
+    font-size: clamp(0.95rem, 0.92rem + 0.15vw, 1.08rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .entry-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.85rem;
+    margin-top: 0.38rem;
+  }
+
+  .entry-tag {
+    font-family: var(--mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--oxblood);
+  }
+
+  /* Folio III · Illuminated Codex */
+  .codex-preface {
+    flex: 0 0 auto;
+    margin: 0 0 0.8rem;
+    max-inline-size: 68ch;
+    font-family: var(--body);
+    font-style: italic;
+    font-size: clamp(0.98rem, 0.92rem + 0.22vw, 1.12rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  .codex-preface::first-letter {
+    float: left;
+    font-family: var(--display);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 2.9rem;
+    line-height: 0.78;
+    padding-inline-end: 0.42rem;
+    padding-top: 0.14rem;
+    color: var(--oxblood);
+    text-shadow: 0 0.8px 0 rgba(255, 246, 214, 0.62);
+  }
+
+  .codex-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .codex-entry {
+    position: relative;
+    padding-block: clamp(0.45rem, 0.8vh, 0.72rem);
+  }
+
+  .codex-term {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .codex-name {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--ink);
+  }
+
+  .codex-code {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--oxblood);
+    letter-spacing: 0.05em;
+  }
+
+  .codex-desc {
+    margin: 0;
+    max-inline-size: 66ch;
+    font-family: var(--body);
+    font-size: clamp(0.94rem, 0.9rem + 0.16vw, 1.04rem);
+    line-height: 1.42;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ledger-fill,
+    .ratio-fill {
+      transition: width 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .rose-wedge {
+      transition: opacity 160ms ease;
+    }
+  }
+}
+
+/* Fluid Container Breakpoints */
+@layer responsive {
+  @container archive (max-width: 960px) {
+    .folio-layer::before,
+    .folio-layer::after {
+      display: none;
+    }
+
+    .masthead-open-book {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.55rem;
+    }
+
+    .masthead-recto::before,
+    .masthead-pulse-banner {
+      display: none;
+    }
+
+    .folio-stage {
+      overflow: visible;
+    }
+
+    .folio-layer {
+      position: static;
+      display: none;
+      min-block-size: 100dvh;
+    }
+
+    .folio-layer.is-active {
+      display: grid;
+    }
+
+    .page-curl-overlay,
+    .corner-turn-hotspot {
+      display: none;
+    }
+
+    .open-book-spread {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+
+    .book-recto {
+      padding-top: 1rem;
+    }
+
+    .rose-block {
+      min-block-size: 18rem;
+    }
+
+    .chronicle-scroll,
+    .page-scroll {
+      max-block-size: 56dvh;
+    }
+
+    .folio-foot {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .folio-page-mark {
+      display: none;
+    }
+  }
+
+  @container archive (max-width: 620px) {
+    .ratio-pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ratio-pair-divider {
+      padding-inline-start: 0;
+      padding-top: 1rem;
+    }
+
+    .ratio-pair-divider::before {
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+      background: var(--rule-tapered-soft);
+    }
+
+    .ledger-row {
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
+    }
+
+    .ledger-leader {
+      display: none;
+    }
+
+    .folio-foot {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .folio-foot-half {
+      justify-content: center;
+    }
+  }
+}

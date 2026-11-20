@@ -1,0 +1,115 @@
+@layer reset, base, layout, components, responsive;
+
+:root {
+  /* Priceless aged yellow-parchment & iron-gall archival palette (single unified paper hue) */
+  --vellum: #ebd69f;
+
+  --ink: #24170c;
+  --ink-soft: #422e1c;
+  --ink-mute: #694f32;
+  --ink-faint: #896d49;
+  --ink-rule: rgba(62, 40, 16, 0.44);
+  --ink-rule-strong: rgba(36, 23, 12, 0.78);
+  --ink-rule-soft: rgba(84, 56, 22, 0.24);
+
+  /* Rubric vermilion / cinnabar */
+  --oxblood: #82201a;
+
+  /* Shared open-book geometry: Verso | Sacred Spine Gutter | Recto */
+  --gutter-gap: clamp(4.2rem, 7.2vw, 7.6rem);
+  --page-margin-x: clamp(2.3rem, 3.9vw, 4.5rem);
+
+  /* Continuous top-to-bottom concave binding spine (symmetric, zero two-tone page tint) */
+  --spine-shadow-w: clamp(6rem, 12vw, 12rem);
+  --spine-shadow-bg: linear-gradient(
+    90deg,
+    rgba(68, 42, 12, 0) 0%,
+    rgba(68, 42, 12, 0.016) 14%,
+    rgba(68, 42, 12, 0.042) 28%,
+    rgba(60, 36, 10, 0.09) 39%,
+    rgba(48, 28, 8, 0.17) 46.2%,
+    rgba(32, 18, 5, 0.29) 49.5%,
+    rgba(24, 13, 3, 0.34) 50%,
+    rgba(46, 27, 8, 0.18) 51.4%,
+    rgba(60, 36, 10, 0.09) 56%,
+    rgba(68, 42, 12, 0.04) 68%,
+    rgba(68, 42, 12, 0.015) 84%,
+    rgba(68, 42, 12, 0) 100%
+  );
+  /* Very subtle narrow crease-lip catchlight (never tints the right half differently) */
+  --spine-highlight-w: clamp(3.6rem, 7vw, 7rem);
+  --spine-highlight-bg: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 51.5%,
+    rgba(255, 248, 222, 0.18) 56%,
+    rgba(255, 248, 222, 0.06) 66%,
+    transparent 80%,
+    transparent 100%
+  );
+
+  /* Tapered hand-inked letterpress rules */
+  --rule-tapered: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(62, 40, 16, 0.4) 5%,
+    rgba(36, 23, 12, 0.64) 50%,
+    rgba(62, 40, 16, 0.4) 95%,
+    transparent 100%
+  );
+  --rule-tapered-soft: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(84, 56, 22, 0.24) 7%,
+    rgba(84, 56, 22, 0.28) 50%,
+    rgba(84, 56, 22, 0.24) 93%,
+    transparent 100%
+  );
+
+  /* Single unified yellowed antique parchment surface (zero grid lines, zero artificial edge stripes) */
+  --parchment-bg-image:
+    /* Symmetric double-page arch lighting + soft outer fore-edge curvature shadow */
+    linear-gradient(
+      90deg,
+      rgba(74, 46, 14, 0.19) 0%,
+      rgba(82, 52, 18, 0.06) 2.5%,
+      rgba(255, 246, 214, 0.22) 25%,
+      transparent 48%,
+      transparent 52%,
+      rgba(255, 246, 214, 0.22) 75%,
+      rgba(82, 52, 18, 0.06) 97.5%,
+      rgba(74, 46, 14, 0.19) 100%
+    ),
+    /* Warm aged top & bottom perimeter oxidation */
+    linear-gradient(
+      180deg,
+      rgba(92, 58, 18, 0.16) 0%,
+      rgba(92, 58, 18, 0.035) 5%,
+      transparent 16%,
+      transparent 84%,
+      rgba(88, 54, 16, 0.04) 95%,
+      rgba(82, 48, 14, 0.18) 100%
+    ),
+    /* Soft warm organic cloud mottling (GPU gradients, zero live SVG feTurbulence) */
+    radial-gradient(ellipse 46% 38% at 22% 30%, rgba(162, 110, 36, 0.08), transparent 72%),
+    radial-gradient(ellipse 42% 36% at 78% 68%, rgba(148, 98, 28, 0.085), transparent 72%),
+    /* Pre-baked 128x128 rag-paper micro-grain PNG tile (injected once at boot) */
+    var(--paper-grain-url, none);
+  --parchment-bg-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 128px 128px;
+  --parchment-bg-pos: center, center, center, center, 0 0;
+  --parchment-bg-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --body: "EB Garamond", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+
+  color-scheme: light;
+  font-family: var(--body);
+  font-size: 100%;
+  line-height: 1.48;
+  color: var(--ink);
+  background-color: var(--vellum);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

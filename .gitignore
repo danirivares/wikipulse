@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.coverage
+
+# Node
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+frontend/dist/
+
+# IDE / agent runtime state
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+CLAUDE.md
+docs/superpowers/
+
+# Environment
+.env
+.env.local
+
+# Local data & model cache
+data/
+models/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

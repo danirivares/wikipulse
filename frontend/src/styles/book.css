@@ -1,0 +1,334 @@
+/* Full-Viewport Edge-to-Edge Open Codex, Page-Curl Stage, Spread Grid & Folio Footer */
+
+@layer layout {
+  .archive-shell {
+    position: relative;
+    container-type: inline-size;
+    container-name: archive;
+    width: 100%;
+    min-block-size: 100dvh;
+    padding: 0;
+  }
+
+  @media (min-width: 961px) and (min-height: 600px) {
+    .archive-shell {
+      block-size: 100dvh;
+      overflow: hidden;
+      container-type: size;
+    }
+  }
+
+  .folio-stage {
+    position: relative;
+    width: 100%;
+    min-block-size: 100dvh;
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  /*
+   * Every `.folio-layer` IS the complete full-height open-book spread (`y = 0..100dvh`):
+   * antique parchment + splotches + worn deckle edges + spine + masthead + content + footer.
+   * Turning a page sweeps seamlessly from top (`y=0`) to bottom (`y=100dvh`).
+   */
+  .folio-layer {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    min-block-size: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 0;
+    contain: layout style paint;
+    background-color: var(--vellum);
+    background-image: var(--parchment-bg-image);
+    background-size: var(--parchment-bg-size);
+    background-position: var(--parchment-bg-pos);
+    background-repeat: var(--parchment-bg-repeat);
+  }
+
+  /* Full-height top-to-bottom book spine baked directly into every moving folio sheet */
+  .folio-layer::before,
+  .folio-layer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .folio-layer::before {
+    width: var(--spine-shadow-w);
+    mix-blend-mode: multiply;
+    background: var(--spine-shadow-bg);
+  }
+
+  .folio-layer::after {
+    width: var(--spine-highlight-w);
+    background: var(--spine-highlight-bg);
+  }
+
+  .folio-layer.is-active {
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .folio-layer.is-under {
+    visibility: visible;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .folio-layer.is-peeling {
+    visibility: visible;
+    pointer-events: none;
+    z-index: 3;
+    will-change: clip-path;
+  }
+
+  /* Per-folio organic splotches, dried stain rings, foxing flecks, and worn deckle perimeter */
+  .folio-antique-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .archive-masthead,
+  .folio-spread,
+  .folio-foot {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Full-viewport curved parchment-peel overlay rolls ABOVE the flat sheets & spine */
+  .page-curl-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0;
+    overflow: visible;
+  }
+
+  /* Quarter-circle interactive hit targets anchored flush against REAL bottom corners */
+  .corner-turn-hotspot {
+    position: absolute;
+    bottom: 0;
+    width: clamp(4.2rem, 5.6vw, 5.8rem);
+    height: clamp(4.2rem, 5.6vw, 5.8rem);
+    z-index: 25;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .corner-turn-hotspot.is-right {
+    --corner-angle: 135deg;
+    right: 0;
+    border-top-left-radius: 100%;
+  }
+
+  .corner-turn-hotspot.is-left {
+    --corner-angle: 225deg;
+    left: 0;
+    border-top-right-radius: 100%;
+  }
+
+  /* Subtle aged-parchment dog-ear hint resting flush at the real bottom corners */
+  .corner-turn-hotspot::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 1.65rem;
+    height: 1.65rem;
+    background: linear-gradient(
+      var(--corner-angle),
+      transparent 48%,
+      rgba(66, 38, 12, 0.22) 49.5%,
+      #f5e7bf 53%,
+      #e5cf96 78%,
+      #d2b678 100%
+    );
+  }
+
+  .corner-turn-hotspot.is-right::after {
+    right: 0;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+
+  .corner-turn-hotspot.is-left::after {
+    left: 0;
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+  }
+
+  .corner-turn-hotspot:hover::after {
+    opacity: 0;
+  }
+
+  /* Symmetric 50/50 Open-Book Spread */
+  .folio-spread {
+    width: 100%;
+    min-block-size: 0;
+    padding-top: clamp(0.75rem, 1.4vh, 1.35rem);
+    padding-inline: var(--page-margin-x);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .open-book-spread {
+    position: relative;
+    flex: 1 1 auto;
+    min-block-size: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gutter-gap);
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .book-page {
+    container-type: inline-size;
+    min-width: 0;
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .book-recto-balanced {
+    justify-content: space-between;
+  }
+
+  .book-recto-balanced > .folio-block-scroll {
+    flex: 1 1 0;
+  }
+
+  .folio-divider {
+    border: 0;
+    height: 1px;
+    background: var(--rule-tapered-soft);
+    margin-block: clamp(0.6rem, 1.2vh, 1.15rem);
+    flex: 0 0 auto;
+  }
+
+  /* Per-Folio Split Verso / Recto Footer */
+  .folio-foot {
+    padding-top: clamp(0.4rem, 0.8vh, 0.75rem);
+    padding-bottom: clamp(0.85rem, 1.4vh, 1.25rem);
+    padding-inline: var(--page-margin-x);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gutter-gap);
+    align-items: stretch;
+  }
+
+  .folio-foot-half {
+    position: relative;
+    padding-top: 0.48rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .folio-foot-half::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background:
+      var(--rule-tapered) top / 100% 1.4px no-repeat,
+      var(--rule-tapered-soft) bottom / 96% 1px no-repeat;
+    pointer-events: none;
+  }
+
+  .folio-foot-verso {
+    padding-inline-start: 0.65rem;
+  }
+
+  .folio-foot-recto {
+    padding-inline-end: 0.65rem;
+  }
+
+  .page-turn-btn {
+    background: transparent;
+    border: 0;
+    padding: 0.16rem 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.42rem;
+    font-family: var(--body);
+    font-style: italic;
+    font-size: clamp(0.92rem, 0.86rem + 0.22vw, 1.06rem);
+    line-height: 1.35;
+    color: var(--ink-soft);
+  }
+
+  .page-turn-btn:hover {
+    color: var(--oxblood);
+  }
+
+  .turn-arrow {
+    display: inline-block;
+    font-style: normal;
+    font-size: 1.3em;
+    line-height: 1;
+    color: var(--oxblood);
+  }
+
+  .folio-page-mark {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .folio-edge-note {
+    display: inline-flex;
+    align-items: baseline;
+    padding: 0.16rem 0;
+    font-family: var(--body);
+    font-style: italic;
+    font-size: clamp(0.92rem, 0.86rem + 0.22vw, 1.06rem);
+    line-height: 1.35;
+    color: var(--ink-faint);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .corner-turn-hotspot::after {
+      transition: opacity 180ms ease;
+    }
+
+    .page-turn-btn {
+      transition: color 140ms ease;
+    }
+
+    .turn-arrow {
+      transition: transform 180ms ease;
+    }
+
+    .page-turn-btn.is-prev:hover .turn-arrow {
+      transform: translateX(-4px);
+    }
+
+    .page-turn-btn.is-next:hover .turn-arrow {
+      transform: translateX(4px);
+    }
+  }
+}

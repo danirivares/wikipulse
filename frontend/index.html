@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WikiPulse</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,500..600,10..30,0..1;1,9..144,600,75,1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="archive-shell">
+      <main id="folio-stage" class="folio-stage" aria-label="Folio I: Live Activity">
+        <div id="folio-slot-0" class="folio-layer is-active"></div>
+        <div id="folio-slot-1" class="folio-layer"></div>
+        <div id="folio-slot-2" class="folio-layer"></div>
+
+        <!-- Zero-filter GPU-composited full-height parchment page-turn overlay -->
+        <svg id="page-curl-svg" class="page-curl-overlay" aria-hidden="true">
+          <defs>
+            <!-- Soft crease shadow cast onto the newly revealed page underneath -->
+            <linearGradient id="page-curl-under-grad" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#281606" stop-opacity="0.28" />
+              <stop offset="28%" stop-color="#2e1a08" stop-opacity="0.09" />
+              <stop offset="100%" stop-color="#2e1a08" stop-opacity="0" />
+            </linearGradient>
+
+            <!-- Soft directional shadow cast beneath the overhanging flap (gradient instead of feGaussianBlur) -->
+            <linearGradient id="page-curl-flap-shadow-grad" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#261505" stop-opacity="0.34" />
+              <stop offset="38%" stop-color="#261505" stop-opacity="0.16" />
+              <stop offset="80%" stop-color="#261505" stop-opacity="0.04" />
+              <stop offset="100%" stop-color="#261505" stop-opacity="0" />
+            </linearGradient>
+
+            <!-- Subtle matte aged-parchment roll lighting (matches front parchment seamlessly) -->
+            <linearGradient id="page-curl-grad" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#d0b67a" />
+              <stop offset="5%" stop-color="#e5cf96" />
+              <stop offset="14%" stop-color="#f5e7bf" />
+              <stop offset="30%" stop-color="#ebd69f" />
+              <stop offset="100%" stop-color="#dfc587" />
+            </linearGradient>
+
+            <!-- Pre-baked 128x128 rag-paper grain tile (zero per-frame feTurbulence) -->
+            <pattern id="page-curl-grain-pattern" width="128" height="128" patternUnits="userSpaceOnUse">
+              <image id="page-curl-grain-img" width="128" height="128" />
+            </pattern>
+
+            <clipPath id="page-curl-keep-clip">
+              <polygon id="page-curl-keep-poly" points="" />
+            </clipPath>
+          </defs>
+
+          <!-- 1. Shadow cast onto the newly revealed folio underneath -->
+          <polygon id="page-curl-under-shadow" fill="url(#page-curl-under-grad)" opacity="0" />
+
+          <!-- 2. Soft cast shadow beneath the overhanging turned flap (clipped strictly to keepPoly) -->
+          <g clip-path="url(#page-curl-keep-clip)">
+            <polygon
+              id="page-curl-shadow"
+              fill="url(#page-curl-flap-shadow-grad)"
+              opacity="0"
+            />
+          </g>
+
+          <!-- 3. Clean matte aged-parchment underside of the turning leaf -->
+          <polygon
+            id="page-curl-back"
+            fill="url(#page-curl-grad)"
+            stroke="rgba(104, 72, 28, 0.26)"
+            stroke-width="0.75"
+          />
+
+          <!-- 4. Pre-baked tiled rag-paper micro-grain over the turned underside -->
+          <polygon
+            id="page-curl-grain"
+            fill="url(#page-curl-grain-pattern)"
+            opacity="0"
+          />
+        </svg>
+
+        <!-- True real-corner bottom-left & bottom-right page-turn triggers -->
+        <button
+          type="button"
+          id="corner-prev-hotspot"
+          class="corner-turn-hotspot is-left"
+          aria-label="Turn to previous folio"
+          title="Previous folio"
+          hidden
+        ></button>
+        <button
+          type="button"
+          id="corner-turn-hotspot"
+          class="corner-turn-hotspot is-right"
+          aria-label="Turn to next folio"
+          title="Next folio"
+        ></button>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+# NVIDIA CUDA GPU override (Q4 QAT + parallel continuous batching):
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+services:
+  llm:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    command:
+      - "--hf-repo"
+      - "${LLM_GPU_HF_REPO:-unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q4_K_XL}"
+      - "--alias"
+      - "${LLM_MODEL:-gemma-4-e4b-qat}"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8000"
+      - "--n-gpu-layers"
+      - "${LLM_GPU_LAYERS:-99}"
+      - "--ctx-size"
+      - "${LLM_GPU_CTX_SIZE:-16384}"
+      - "--parallel"
+      - "${LLM_GPU_PARALLEL:-4}"
+      - "--cont-batching"
+      - "--flash-attn"
+      - "on"
+      - "--cache-reuse"
+      - "256"
+      - "--jinja"
+      - "--reasoning"
+      - "off"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  analyzer:
+    environment:
+      ANALYZER_CONCURRENCY: "${LLM_GPU_CONCURRENCY:-4}"
+      LLM_TIMEOUT_S: "${LLM_GPU_TIMEOUT_S:-45}"
